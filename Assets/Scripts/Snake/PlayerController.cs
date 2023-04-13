@@ -53,6 +53,18 @@ namespace Snake
                 }
             }
         }
+
+        public Vector3 Direction
+        {
+            get
+            {
+                return m_direction;
+            }
+            private set
+            {
+                m_direction = value;
+            }
+        }
     }
 }
 

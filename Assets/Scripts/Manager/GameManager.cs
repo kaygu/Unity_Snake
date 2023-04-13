@@ -7,6 +7,9 @@ namespace Snake
     public class GameManager : MonoBehaviour
     {
         private static GameManager m_instance;
+
+        [Range(10, 100)]
+        public int size = 10;
         private void Awake()
         {
             if (Instance != null && Instance != this)
