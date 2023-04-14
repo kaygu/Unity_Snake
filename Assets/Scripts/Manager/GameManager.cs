@@ -6,7 +6,7 @@ namespace Snake
 {
     public class GameManager : MonoBehaviour
     {
-        private static GameManager m_instance;
+        public static GameManager Instance { get; private set; }
 
         [Range(10, 100)]
         public int size = 10;
@@ -19,28 +19,9 @@ namespace Snake
                 return;
             }
             Instance = this;
+            Debug.Log("Intance created");
         }
 
-        private void Update()
-        {
-
-        }
-
-        public static GameManager Instance
-        {
-            get
-            {
-                if (m_instance == null)
-                {
-                    Debug.LogError("GameManager is NULL");
-                }
-                return m_instance;
-            }
-            private set
-            {
-                m_instance = value;
-            }
-        }
     }
 
 }
