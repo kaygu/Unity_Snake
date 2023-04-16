@@ -28,8 +28,6 @@ namespace Snake
                 Move();
                 m_isEaten = false;
             }
-            // Spawn apple & return position
-            // Apple can be anywhere except in snake tail or head
         }
 
         public void Eat()
@@ -38,20 +36,13 @@ namespace Snake
             m_isEaten = true;
         }
 
-        private Vector3 Move()
+        private void Move()
         {
-            Vector3[] freeSpace = m_gm.Grid.Except(m_snake.OccupiedPlaces()).ToArray();
+            Vector3[] freeSpace = m_gm.Grid.Except(m_snake.OccupiedPlaces()).ToArray(); //m_gm.Grid.Where(x => !m_snake.OccupiedPlaces().Contains(x)).ToArray();  //
             int x = Random.Range(0, freeSpace.Length);
-            print(m_gm.Grid.Length - m_snake.OccupiedPlaces().Length);
-            Debug.Log(string.Format("{0}, {1}", freeSpace.Length, x));
-            foreach (var item in freeSpace)
-            {
-                Debug.Log(item.ToString());
-            }
             m_apple.transform.position = freeSpace[x];
             m_apple.SetActive(true);
             Position = m_apple.transform.position;
-            return m_apple.transform.position;
         }
 
         public Vector3 Position
@@ -66,7 +57,7 @@ namespace Snake
             }
         }
 
-        public bool isEaten()
+        public bool IsEaten()
         {
             return m_isEaten;
         }

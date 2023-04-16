@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace Snake
 {
+    public enum GameStateEnum
+    {
+        PLAYING,
+        DEAD,
+        WON
+    }
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
@@ -27,7 +33,7 @@ namespace Snake
             {
                 for (int j = 0; j < Size; j++)
                 {
-                    Grid[i + j] = new Vector3(i, j, 0);
+                    Grid[i * 10 + j] = new Vector3(i, j, 0);
                 }
             }
         }

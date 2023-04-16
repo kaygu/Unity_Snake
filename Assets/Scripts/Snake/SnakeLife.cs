@@ -28,21 +28,22 @@ namespace Snake
             MoveBody();
             CheckIfDead();
             Vector3 apple_pos = m_apple.Position;
-            if (!m_apple.isEaten() && apple_pos == transform.position)
+            if (!m_apple.IsEaten() && apple_pos == transform.position)
             {
                 m_apple.Eat();
-                CreateBodyPart(transform.position);
+                
             } 
-            else if (m_apple.isEaten() && apple_pos != transform.position)
+            else if (m_apple.IsEaten() && apple_pos != transform.position)
             {
                 m_apple.Spawn();
+                m_tail.Last().isDigesting = true;
             }
         }
 
-        private void CreateBodyPart(Vector3 _pos)
+        private void CreateBodyPart(Vector3 _pos, bool _digest = false)
         {
             BodyPart bp = Instantiate(m_bodyPart, _pos, Quaternion.identity, m_body.transform).GetComponent<BodyPart>();
-            bp.Init(_pos);
+            bp.Init(_pos, _digest);
             m_tail.Add(bp);
         }
 
@@ -52,9 +53,17 @@ namespace Snake
             {
                 if (m_tail.Last().Position != transform.position - _controller.Direction)
                 {
-                    CreateBodyPart(transform.position - _controller.Direction); // add bodt part
-                    Destroy(m_tail[0].gameObject); // remove end of tail
-                    m_tail.RemoveAt(0);
+                    CreateBodyPart(transform.position - _controller.Direction);
+                    if (m_tail[0].isDigesting)
+                    {
+                        m_tail[0].isDigesting = false;
+                    }
+                    else
+                    {
+                        Destroy(m_tail[0].gameObject);
+                        m_tail.RemoveAt(0);
+                    }
+
                 }
             }
     }
