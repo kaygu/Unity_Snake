@@ -14,9 +14,16 @@ namespace Snake
     {
         public static GameManager Instance { get; private set; }
 
+        public Vector2 WorldOrigin = new Vector2(0, 0);
         [Range(10, 100)]
-        public int Size = 10;
+        public int Size;
+        public bool CycleThroughWalls = true;
+        
+        [HideInInspector]
         public Vector3[] Grid;
+        
+        public GameStateEnum GameState = GameStateEnum.PLAYING;
+        
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -33,7 +40,7 @@ namespace Snake
             {
                 for (int j = 0; j < Size; j++)
                 {
-                    Grid[i * 10 + j] = new Vector3(i, j, 0);
+                    Grid[i * Size + j] = new Vector3(i, j, 0);
                 }
             }
         }

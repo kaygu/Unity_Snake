@@ -10,27 +10,35 @@ namespace Snake
         [SerializeField] private float m_moveDelay;
         [SerializeField] private float m_moveDelayIncrement;
         private float m_timeElapsed;
+        private int m_gridSize;
+        private Vector3 m_worldOrigin;
 
         private Vector3 m_direction = Vector3.up;
         private List<Vector3> m_dirQueue = new List<Vector3>();
         private void Awake()
         {
             m_timeElapsed = m_moveDelay;
+            m_gridSize = GameManager.Instance.Size;
+            m_worldOrigin = GameManager.Instance.WorldOrigin;
         }
 
         private void FixedUpdate()
         {
-            if (m_timeElapsed <= 0)
+            if (GameManager.Instance.GameState == GameStateEnum.PLAYING)
             {
-                if (m_dirQueue.Count > 0)
+                if (m_timeElapsed <= 0)
                 {
-                    m_direction = m_dirQueue[0];
-                    m_dirQueue.RemoveAt(0);
+                    if (m_dirQueue.Count > 0)
+                    {
+                        m_direction = m_dirQueue[0];
+                        m_dirQueue.RemoveAt(0);
+                    }
+                    transform.position += m_direction;
+                    CycleWalls();
+                    m_timeElapsed = m_moveDelay;
                 }
-                transform.position += m_direction;
-                m_timeElapsed = m_moveDelay;
+                m_timeElapsed -= Time.fixedDeltaTime;
             }
-            m_timeElapsed -= Time.fixedDeltaTime;
         }
 
         public void Move(Vector3 _dir)
@@ -51,6 +59,19 @@ namespace Snake
                         m_dirQueue.Add(_dir);
                     }
                 }
+            }
+        }
+
+        private void CycleWalls()
+        {
+            if (GameManager.Instance.CycleThroughWalls)
+            {
+                // x
+                if (transform.position.x >= m_gridSize) transform.position = new Vector3(m_worldOrigin.x, transform.position.y, transform.position.z);
+                if (transform.position.x < m_worldOrigin.x) transform.position = new Vector3(m_gridSize - 1, transform.position.y, transform.position.z);
+                // y
+                if (transform.position.y >= m_gridSize) transform.position = new Vector3(transform.position.x, m_worldOrigin.y, transform.position.z);
+                if (transform.position.y < m_worldOrigin.y) transform.position = new Vector3(transform.position.x, m_gridSize - 1, transform.position.z);
             }
         }
 
