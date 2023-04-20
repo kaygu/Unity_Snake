@@ -48,8 +48,5 @@ namespace Snake
                 m_isDigesting = value;
             }
         }
-
-
     }
-
 }

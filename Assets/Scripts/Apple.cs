@@ -8,7 +8,7 @@ namespace Snake
     public class Apple : MonoBehaviour
     {
         [SerializeField] private GameObject m_apple;
-        [SerializeField] private SnakeLife m_snake;
+        [SerializeField] private PlayerController m_snake;
         private GameManager m_gm;
 
         private bool m_isEaten = true;
@@ -38,7 +38,7 @@ namespace Snake
 
         private void Move()
         {
-            Vector3[] freeSpace = m_gm.Grid.Except(m_snake.OccupiedPlaces()).ToArray(); //m_gm.Grid.Where(x => !m_snake.OccupiedPlaces().Contains(x)).ToArray();  //
+            Vector3[] freeSpace = m_gm.Grid.Except(m_snake.OccupiedPlaces()).ToArray();
             int x = Random.Range(0, freeSpace.Length);
             m_apple.transform.position = freeSpace[x];
             m_apple.SetActive(true);

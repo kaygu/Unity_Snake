@@ -18,10 +18,14 @@ namespace Snake
         [Range(10, 100)]
         public int Size;
         public bool CycleThroughWalls = true;
-        
+        [Space]
+        public float MoveDelay = .5f;
+        public float MoveDelayIncrement = .01f;
+
         [HideInInspector]
         public Vector3[] Grid;
-        
+
+        [HideInInspector]
         public GameStateEnum GameState = GameStateEnum.PLAYING;
         
         private void Awake()
@@ -33,7 +37,7 @@ namespace Snake
                 return;
             }
             Instance = this;
-            Debug.Log("Intance created");
+            Debug.Log("GameManager Intance created");
 
             Grid = new Vector3[Size * Size];
             for (int i = 0; i < Size; i++)
